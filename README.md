@@ -10,7 +10,7 @@ To run this project, you need to have **R** and the required libraries installed
 
 ### Required Libraries:
 ```r
-install.packages(c("ggplot2",)
+install.packages(c("ggplot2")
 ```
 Run the analysis script as follows:
 ```r
