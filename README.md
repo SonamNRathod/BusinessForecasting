@@ -75,10 +75,6 @@ install.packages(c("readxl", "ggplot2", "dplyr"))
 - **Scatter Plot of Age vs. Years with Employer**: This scatter plot highlights a relationship between employee age and tenure with the company. Older employees tend to have longer tenures.
 - **Scatter Plot of Years with Employer vs. Promotion Likelihood**: Shows the relationship between employee tenure and perceived likelihood of promotion.
 
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
 ## Authors
 
 - **Sonam Rathod** - Data Scientist / Analyst
