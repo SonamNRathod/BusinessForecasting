@@ -58,13 +58,10 @@ install.packages(c("readxl", "ggplot2", "dplyr"))
 
 ### Running the Analysis
 
-1. **Clone the repository** (if you’re using GitHub):
-   ```bash
-   git clone https://github.com/your-username/employee-survey-analysis.git
-   ```
+1. **Clone the repository** 
 
 2. **Open the R Markdown file** in RStudio:
-   - Open **Employee_Survey_Analysis.Rmd**.
+   - Open **Rmd file**.
 
 3. **Run the Rmd file**:
    - Click the **Knit** button in RStudio to generate the HTML report.
