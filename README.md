@@ -31,10 +31,6 @@ The dataset is based on a survey of 122 employees, and it includes the following
    - **Scatter plots** to visualize relationships between numerical variables such as **Age** and **Years with Employer**.
    - **Annotated plots** to highlight key findings directly in the visualizations.
 
-3. **Managerial Implications**:
-   - Insights into which factors are most valued by employees.
-   - Understanding employee satisfaction and tenure to guide decision-making regarding promotions, employee retention, and job satisfaction.
-
 ## Files
 
 - **Typical_Employee_Survey_Data.xlsx**: The dataset containing the survey responses.
