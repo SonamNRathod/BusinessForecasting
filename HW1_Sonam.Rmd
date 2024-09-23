@@ -5,34 +5,39 @@ date: "2024-09-20"
 output: html_document
 ---
 
+# Import the Excel file without using the first row as column names
 ```{r}
 library(readxl)
 library(ggplot2)
 library(dplyr)
-
-# Import the Excel file without using the first row as column names
 empData <- read_excel("/Users/sonamrathod/Documents/Rutgers/Course/Business Forecasting/Week 2/Typical_Employee_Survey_Data.xlsx", 
                       col_names = FALSE)
+```
 
 # 1. Add Header Row
+```{r}
 names(empData) <- c("Age", "Gender", "Job_Satisfaction", "Job_Characteristic", "Years_With_Employer", "Promotion_Likelihood", "Decision_Participation", "Budget_Participation", "Pride_Working", "Turn_Down_Job", "Coworker_Relations")
 
 # View the data with the new headers
 head(empData)
+```
 
-#2 Print out the 5-point summary and boxplot (numerical columns) for each column
-# 5-point summary using summary() function for numerical columns
+# 2. Print out the 5-point summary and boxplot (numerical columns) for each column
+```{r}
 summary(empData$Age)
 summary(empData$Years_With_Employer)
 summary(empData)
+
 # Boxplots for numerical columns (Age, Years_With_Employer)
 boxplot(empData$Age, main = "Boxplot of Age", ylab = "Age", col = "lightblue")
-## Most employees, according to the boxplot, fall within the age range of 30 to 40 years.
+mtext("Most employees, according to the boxplot, fall within the age range of 30 to 40 years.", side =1, line =1 )
 
 boxplot(empData$Years_With_Employer, main = "Boxplot of Years With Employer", ylab = "Years with Employer", col = "lightgreen")
-## According to the boxplot, the majority of employees have a tenure of 10 years or less.
+mtext("According to the boxplot, the majority of employees have a tenure of 10 years or less.", side =1, line =1)
+```
 
 # 3. Convert the columns that need to be converted to Factors
+```{r}
 empData$Gender <- factor(empData$Gender, levels = c(1, 2), labels = c("Male", "Female"))
 
 empData$Job_Satisfaction <- factor(empData$Job_Satisfaction, levels = c(1, 2, 3, 4),
@@ -65,12 +70,11 @@ empData$Coworker_Relations <- factor(empData$Coworker_Relations,
                                      labels = c("Very Good", "Good", "So So", "Bad", "Very Bad"),
                                      ordered = TRUE)
 str(empData)
-
-
+```
 
 # 4. Plot the right visual for each column 
-
-# 1. Pie chart for Gender 
+## 4.1 Pie chart for Gender 
+```{r}
 gender_count <- empData %>%
   count(Gender) %>%
   mutate(percentage = n / sum(n) * 100)
@@ -84,27 +88,34 @@ ggplot(gender_count, aes(x = "", y = n, fill = Gender)) +
   geom_text(aes(label = paste0(round(percentage, 1), "%")), 
             position = position_stack(vjust = 0.5)) +
   theme(legend.position = "right", plot.title = element_text(hjust = 0.5))
+```
 
-# 2. Bar plot for Job Satisfaction 
+## 4.2 Bar plot for Job Satisfaction 
+```{r}
 ggplot(empData, aes(x = factor(Job_Satisfaction))) + 
   geom_bar(fill = "purple", color = "black") + 
-  labs(title = "Job Satisfaction Levels", x = "Job Satisfaction", y = "Count") +
+  labs(title = "Job Satisfaction Levels", x = "Job Satisfaction", y = "Count", caption ="Job Satisfaction: The majority of employees are either very satisfied or moderately satisfied with their jobs") +
   theme_minimal() + theme(plot.title = element_text(hjust = 0.5))
-###Job Satisfaction: The majority of employees are either very satisfied or moderately satisfied with their jobs 
+```
 
-# 3. Bar plot for Important Job Characteristic 
+## 4.3 Bar plot for Important Job Characteristic
+```{r}
 ggplot(empData, aes(y = Job_Characteristic)) + 
   geom_bar(fill = "coral", color = "black") + 
   labs(title = "Important Job Characteristics", y = "Job Characteristic", x = "Count") +
   theme_minimal() + theme(plot.title = element_text(hjust = 0.5))
+```
 
-# 4. Histogram for Age 
+## 4.4 Histogram for Age 
+```{r}
 ggplot(empData, aes(x = Age)) + 
   geom_histogram(binwidth = 5, fill = "lightblue", color = "black") + 
   labs(title = "Age Distribution", x = "Age", y = "Count") +
   theme_minimal() + theme(plot.title = element_text(hjust = 0.5))
+```
 
-# 5. Pie chart for Promotion Likelihood 
+## 4.5 Pie chart for Promotion Likelihood 
+```{r}
 budget_count <- empData %>%
   count(Promotion_Likelihood) %>%
   mutate(percentage = n / sum(n) * 100)
@@ -116,15 +127,20 @@ ggplot(budget_count, aes(x = "", y = n, fill = Promotion_Likelihood)) +
   geom_text(aes(label = paste0(round(percentage, 1), "%")), 
             position = position_stack(vjust = 0.5), color ="brown") +
   theme(legend.position = "right")
+```
 
-# 6. Bar plot for Decision Participation 
+More than 50% are not confident about being promotedwhich could be concerning, however, if we consider job satisfaction (4.2) & job characteristic(4.3) this is probably not an issue
+
+## 4.6 Bar plot for Decision Participation 
+```{r}
 ggplot(empData, aes(x = Decision_Participation)) + 
   geom_bar(fill = "goldenrod", color = "black") + 
   labs(title = "Decision Participation Distribution", x = "Decision Participation", y = "Count") +
   theme_minimal() + theme(plot.title = element_text(hjust = 0.5))
+```
 
-
-# 7. Pie chart for Budget Participation 
+## 4.7 Pie chart for Budget Participation 
+```{r}
 budget_count <- empData %>%
   count(Budget_Participation) %>%
   mutate(percentage = n / sum(n) * 100)
@@ -138,59 +154,73 @@ ggplot(budget_count, aes(x = "", y = n, fill = Budget_Participation)) +
   geom_text(aes(label = paste0(round(percentage, 1), "%")), 
             position = position_stack(vjust = 0.5)) +
   theme(legend.position = "right")
+```
 
-# 8. Bar plot for Pride in Working 
+## 4.8 Bar plot for Pride in Working 
+```{r}
 ggplot(empData, aes(x = Pride_Working)) + 
   geom_bar(fill = "seagreen", color = "black") + 
   labs(title = "Pride in Working Distribution", x = "Pride in Working", y = "Count") +
   theme_minimal() + theme(plot.title = element_text(hjust = 0.5))
+```
 
-# 9. Bar plot for Turn Down Job for More Pay 
+## 4.9 Bar plot for Turn Down Job for More Pay 
+```{r}
 ggplot(empData, aes(x = Turn_Down_Job)) + 
   geom_bar(fill = "coral", color = "black") + 
   labs(title = "Likelihood of Turning Down Job for More Pay", x = "Turn Down Job", y = "Count") +
   theme_minimal() + theme(plot.title = element_text(hjust = 0.5))
+```
 
-# 10. Bar plot for Coworker Relations 
+## 4.10 Bar plot for Coworker Relations 
+```{r}
 ggplot(empData, aes(x = Coworker_Relations)) + 
   geom_bar(fill = "purple", color = "black") + 
   labs(title = "Coworker Relations Distribution", x = "Coworker Relations", y = "Count") +
   theme_minimal() + theme(plot.title = element_text(hjust = 0.5))
+```
 
-# 11. Histogram for Years with Employer 
+## 4.11 Histogram for Years with Employer 
+```{r}
 ggplot(empData, aes(x = Years_With_Employer)) + 
   geom_histogram(binwidth = 1, fill = "lightgreen", color = "black") + 
   labs(title = "Years with Employer Distribution", x = "Years with Employer", y = "Count") +
   theme_minimal() + theme(plot.title = element_text(hjust = 0.5))
-
+```
 
 # 5. Plot scatter plots to show few relationships
-
-# 5.1 Scatter plot for Age vs. Years with Employer
+## 5.1 Scatter plot for Age vs. Years with Employer
+```{r}
 ggplot(empData, aes(x = Age, y = Years_With_Employer)) + 
   geom_point(color = "blue", size = 2) + 
   labs(title = "Scatter Plot of Age vs. Years with Employer", x = "Age", y = "Years with Employer") +
   theme_minimal() + theme(plot.title = element_text(hjust = 0.5))
-#This scatter plot highlights a relationship between employee age and tenure with the company. Older employees tend to have longer tenures.
+```
 
-# A scatter plot is primarily used to visualize the relationship between two numerical (continuous) variables. However, you can incorporate categorical data into a scatter plot by using visual properties like color, shape, or size to differentiate between categories. 
+This scatter plot highlights a relationship between employee age and tenure with the company. Older employees tend to have longer tenures.
 
-# 5.2 Relation of age, tenure and gender
+>A scatter plot is primarily used to visualize the relationship between two numerical (continuous) variables. However, you can incorporate categorical data into a scatter plot by using visual properties like color, shape, or size to differentiate between categories. 
+
+## 5.2 Relation of Age, Tenure and Gender
+```{r}
 ggplot(empData,aes(x = Age, y = Years_With_Employer, color = Gender))+
   geom_point(aes(shape = Gender),size = 2)+
   ggtitle("Impact of age, tenure and gender")+
   xlab("Age")+
   ylab("Years with employer")  + theme(plot.title = element_text(hjust = 0.5))
+```
 
-# 5.3 Relation of age, tenure and Budget_Participation
+## 5.3 Relation of Age, Tenure and Budget Participation
+```{r}
 ggplot(empData,aes(x = Age, y = Years_With_Employer, color = Budget_Participation))+
   geom_point(aes(shape = Budget_Participation),size = 2)+
   ggtitle("Impact of age, tenure and budgetory decision")+
   xlab("Age")+
   ylab("Years with employer")  + theme(plot.title = element_text(hjust = 0.5))
+```
 
-
-# 5.4 Scatter plot for Age, tenure, gender and  Job Satisfaction
+## 5.4 Relation of Age, Tenure, Gender and Job Satisfaction
+```{r}
 ggplot(empData, aes(x = Age, y = Years_With_Employer, color =Gender)) + 
   geom_point(size = 3) + 
   facet_wrap(~ Job_Satisfaction) + 
@@ -201,58 +231,64 @@ ggplot(empData, aes(x = Age, y = Years_With_Employer, color =Gender)) +
   
   # Center-align the title
   theme(plot.title = element_text(hjust = 0.5))
+```
 
-
-
-# 5.5 Scatter plot for Years_With_Employer vs. Job Characteristic
+## 5.5 Relation of Age, Tenure, Gender and Job Characteristic
+```{r}
 ggplot(empData, aes(y = Years_With_Employer, x = Age, color = Gender))+
   geom_point(aes(shape = Gender), size = 2)+
-   facet_wrap(~ Job_Characteristic) + 
-  ggtitle("Relation of  age, tenure, gender & Decision participation")+
+  facet_wrap(~ Job_Characteristic) + 
+  ggtitle("Relation of  Age, Tenure, Gender & Decision participation")+
   xlab("Age")+
   ylab("Years with employer") + theme(plot.title = element_text(hjust = 0.5))
+```
 
-
-
-# 5.6. Scatter plot for Years with Employer vs. Promotion Likelihood
+## 5.6. Relation of Age, Tenure, Gender and Promotion Likelihood
+```{r}
 ggplot(empData, aes(y = Years_With_Employer, x = Age, color = Gender))+
   geom_point(aes(shape = Gender), size = 2)+
-   facet_wrap(~ Promotion_Likelihood) + 
-  ggtitle("Relation of  age, tenure, gender & Promotion Likelihood")+
+  facet_wrap(~ Promotion_Likelihood) + 
+  ggtitle("Relation of  Age, Tenure, Gender & Promotion Likelihood")+
   xlab("Age")+
   ylab("Years with employer") + theme(plot.title = element_text(hjust = 0.5))
+```
 
-# 5.7
+## 5.7 Relation of Age, Tenure, Gender and Decision participation
+```{r}
 ggplot(empData, aes(y = Years_With_Employer, x = Age, color = Gender))+
   geom_point(aes(shape = Gender), size = 2)+
-   facet_wrap(~ Decision_Participation) + 
-  ggtitle("Relation of  age, tenure, gender & Decision participation")+
+  facet_wrap(~ Decision_Participation) + 
+  ggtitle("Relation of  Age, Tenure, Gender & Decision participation")+
   xlab("Age")+
   ylab("Years with employer") + theme(plot.title = element_text(hjust = 0.5))
+```
 
-# 5.8 
+## 5.8 Relation of  Age, Tenure, Gender & Pride Working 
+```{r}
 ggplot(empData, aes(y = Years_With_Employer, x = Age, color = Gender))+
   geom_point(aes(shape = Gender), size = 2)+
-   facet_wrap(~ Pride_Working) + 
-  ggtitle("Relation of  age, tenure, gender & Pride Working ")+
+  facet_wrap(~ Pride_Working) + 
+  ggtitle("Relation of  Age, Tenure, Gender & Pride Working ")+
   xlab("Age")+
   ylab("Years with employer") + theme(plot.title = element_text(hjust = 0.5))
+```
 
-# 5.8
+## 5.9 Relation of  Age, Tenure, Gender & Switching the job 
+```{r}
 ggplot(empData, aes(y = Years_With_Employer, x = Age, color = Gender))+
   geom_point(aes(shape = Gender), size = 2)+
-   facet_wrap(~ Turn_Down_Job) + 
-  ggtitle("Relation of  age, tenure, gender & switching the job ")+
+  facet_wrap(~ Turn_Down_Job) + 
+  ggtitle("Relation of  Age, Tenure, Gender & Switching the job ")+
   xlab("Age")+
   ylab("Years with employer") + theme(plot.title = element_text(hjust = 0.5))
+```
 
-# 5.9
+## 5.10 Relation of  Age, Tenure, Gender & Coworker Relationship 
+```{r}
 ggplot(empData, aes(y = Years_With_Employer, x = Age, color = Gender))+
   geom_point(aes(shape = Gender), size = 2)+
-   facet_wrap(~ Coworker_Relations) + 
-  ggtitle("Relation of  age, tenure, gender & coworker relationship ")+
+  facet_wrap(~ Coworker_Relations) + 
+  ggtitle("Relation of  Age, Tenure, Gender & Soworker Relationship ")+
   xlab("Age")+
   ylab("Years with employer") + theme(plot.title = element_text(hjust = 0.5))
-
-
 ```
