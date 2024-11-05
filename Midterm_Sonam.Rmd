@@ -404,6 +404,7 @@ the Holt-Winters method shows moderate accuracy, capturing both trend and season
 #### What does it predict the time series value will be in one year?
 The model provides monthly forecasts for the next year, with values that vary due to seasonality
 August 2025 -  5649.69
+
 #### Other observation
 The Holt-Winters additive method provides a well-rounded forecast, capturing the trend and seasonal patterns observed in the data
 
@@ -426,5 +427,13 @@ The Holt-Winters will be most suitable for this and naive and ses would not be s
 
 # Conclusion
 #### Summarize your analysis of time series value over the time period.
+ Based on the analysis, the time series is expected to stay relatively flat, with seasonal fluctuations, over the next year and likely the next two years.
+ 
 #### Based on your analysis and forecast above, do you think the value of the time series will increase, decrease, or stay flat over the next year? How about the next 2 years?
+If the current trend continues, sales are likely to continue increasing over the next two years. The upward trend suggests sustained growth, and the seasonal patterns are expected to remain consistent unless significant market changes occur.
+
 #### Rank forecasting methods for this time series based on historical values.
+```{r}
+accuracy_table$Model_Rank <- rank(accuracy_table$RMSE)
+print(accuracy_table)
+```
