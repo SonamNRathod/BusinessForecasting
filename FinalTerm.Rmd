@@ -188,6 +188,10 @@ The Naive method is too simple for this time series because it fails to capture 
 # Simple Moving Averages
 
 ### Plot the graph for the time series.
+```{r}
+plot(sales_window_ts, main='Monthly sales for the US Car company', xlab ='Year', ylab='Sales')
+```
+
 #### Show the Simple Moving average of order three on the plot above in Red
 ```{r}
 simple_ma3 <- ma(sales_window_ts, order = 3)
